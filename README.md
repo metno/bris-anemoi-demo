@@ -13,8 +13,8 @@ Need to set correct paths in jobscript_training.sh and training/training_config_
 
     sbatch jobscript_training.sh
 
-Can see training metrics (per variable loss, overall loss) in ${output}/logs/mlflow folder.
-Model checkpoints stored in ${output}/checkpoint
+Can see training metrics (per variable loss, overall loss) in output/logs/mlflow folder.
+Model checkpoints stored in output/checkpoint
 
 ### Inference
 Need to set correct paths in jobscript_inference.sh and training/inference_config_demo.yaml
