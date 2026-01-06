@@ -1,0 +1,83 @@
+defaults:
+- data: zarr
+- dataloader: native_grid
+- diagnostics: evaluation_ens
+- system: slurm
+- graph: multi_scale
+- model: graphtransformer_ens
+- training: ensemble
+- _self_
+
+hydra: 
+  output_subdir: null
+  run:
+    dir: . 
+
+config_validation: True
+
+# Overrides
+system:
+  input: 
+    graph: # Graph file to load (will be built and saved if not found)
+    dataset: /leonardo_work/EUHPC_R04_079/bris/datasets/ERA5/aifs-ea-an-oper-0001-mars-o96-1979-2023-1h-v1.zarr
+    loss_matrices_path: jajadingdong # For some reason we need this even though we do not use loss matrices
+  output: 
+    root: # Root output directory for training outputs (checkpoints, training metrics)
+  hardware: 
+    num_gpus_per_model: 1
+    num_gpus_per_ensemble: 2
+  
+model:
+  num_channels: 128
+  trainable_parameters:
+    data: 0
+    hidden: 0
+    data2hidden: 0
+    hidden2data: 0
+    hidden2hidden: 0
+
+dataloader: 
+  limit_batches:
+    training: 100
+    validation: 100
+  num_workers:
+    training: 4
+    validation: 4
+    test: 4
+
+  training: 
+    start: 1979
+    end: 2022
+  validation:
+    start: 2023
+    end: 2023
+  test:
+    start: 2023
+    end: 2023
+
+training:
+  max_epochs: 5
+  ensemble_size_per_device: 1
+  num_sanity_val_steps: 6
+
+diagnostics:
+  plot:
+    callbacks: []
+  callbacks: []
+  checkpoint:
+    every_n_epochs:
+      save_frequency: 1
+      num_models_saved: 5
+  log:     
+    mlflow:
+      enabled: True
+      offline: True
+      authentication: True
+      tracking_uri: https://mlflow.ecmwf.int
+      experiment_name: metno
+      run_name: demo_run_001
+    wandb:
+      entity: null
+
+
+
