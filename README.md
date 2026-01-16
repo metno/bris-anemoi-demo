@@ -20,3 +20,9 @@ Model checkpoints stored in output/checkpoint
 Need to set correct paths in jobscript_inference.sh and training/inference_config_demo.yaml
 
     sbatch jobscript_infer.sh
+
+
+### Running Bris
+Config with correct dataset paths and a converged checkpoint (experiment ws_loss_r2) in inference/bris.yaml
+
+Each checkpoint requires the specific version of anemoi models used to train the model (or one that is close). The included checkpoint should work with commit **2b6c2055c0155b6cf5e58355f0358245dafd7705** of https://github.com/ecmwf/anemoi-core
